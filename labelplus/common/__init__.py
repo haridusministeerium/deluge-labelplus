@@ -57,11 +57,9 @@ LABEL_UPDATE_TYPE_FULL = "Full"
 def get_resource(filename):
 
   import os
-  import pkg_resources
+  from importlib.resources import files
 
-
-  return pkg_resources.resource_filename(
-      MODULE_NAME, os.path.join("data", filename))
+  return str(files(MODULE_NAME).joinpath(os.path.join("data", filename)))
 
 
 # Section: Error
