@@ -1,3 +1,9 @@
+0.3.2.7 (unreleased)
+--------------------
+
+- Nothing changed yet.
+
+
 0.3.2.6 (2026-09-01)
 - add mise.toml
 - fix the pkg_resources deprecation (thanks @wendellavila !) -- #6

@@ -36,7 +36,7 @@ import os
 import glob
 
 # note the version is managed by zest.releaser:
-version = "0.3.2.6"
+version = "0.3.2.7.dev0"
 
 __plugin_name__ = "LabelPlus"
 __author__ = "Laur"
