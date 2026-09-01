@@ -1,5 +1,7 @@
 ## 0.3.2.6 (unreleased)
-- Nothing changed yet.
+- add mise.toml
+- fix the pkg_resources deprecation (thanks @wendellavila !) -- #6
+- migrate from drone to GH actions
 
 0.3.2.5 (2022-10-30)
 - Correct segmentation fault in Wayland

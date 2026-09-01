@@ -40,7 +40,7 @@ version = "0.3.2.6.dev0"
 
 __plugin_name__ = "LabelPlus"
 __author__ = "Laur"
-__url__ = "https://github.com/laur89/deluge-labelplus"
+__url__ = "https://github.com/haridusministeerium/deluge-labelplus"
 __license__ = "GPLv3"
 __description__ = "Assign labels to torrents"
 __long_description__ = """
