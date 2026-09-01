@@ -1,4 +1,4 @@
-## 0.3.2.6 (unreleased)
+0.3.2.6 (2026-09-01)
 - add mise.toml
 - fix the pkg_resources deprecation (thanks @wendellavila !) -- #6
 - migrate from drone to GH actions
