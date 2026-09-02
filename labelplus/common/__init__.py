@@ -38,11 +38,17 @@ import copy
 import datetime
 import gettext
 import logging
+import atexit
+from functools import lru_cache
+from importlib.resources import files, as_file
+from contextlib import ExitStack
 
 
 # Section: General
 
 _ = gettext.gettext
+_resource_stack = ExitStack()
+atexit.register(_resource_stack.close)
 
 PLUGIN_NAME = "LabelPlus"
 MODULE_NAME = "labelplus"
@@ -54,12 +60,11 @@ STATUS_NAME = "%s_name" % MODULE_NAME
 DATETIME_010101 = datetime.datetime(1, 1, 1)
 LABEL_UPDATE_TYPE_FULL = "Full"
 
+
+@lru_cache(maxsize=None)
 def get_resource(filename):
-
-  import os
-  from importlib.resources import files
-
-  return str(files(MODULE_NAME).joinpath(os.path.join("data", filename)))
+  ref = files(MODULE_NAME).joinpath("data", filename)
+  return str(_resource_stack.enter_context(as_file(ref)))
 
 
 # Section: Error

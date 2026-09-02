@@ -1,18 +1,41 @@
-0.3.2.7 (unreleased)
---------------------
+## 0.3.2.7 (unreleased)
 
-- Nothing changed yet.
+- fix common/get_resource()
+   - the initial fix introduced by #6 was insufficient. with that fix the
+     client failed to start w/ following err:
+     > (deluge:1): Gtk-ERROR **: 23:45:56.424: failed to add UI: Failed to open file “/home/user/.config/deluge/plugins/LabelPlus-0.3.2.6.egg/labelplus/data/blk_add_torrent_ext.ui”: Not a directory
+   
+     - pkg_resources.resource_filename() knew how to handle this. For a resource living inside a zip,
+       it would silently extract it to a real temp cache directory (the old PYTHON_EGG_CACHE) and hand
+       back a genuine filesystem path — something GTK's Gtk.Builder/add_from_file() could actually open().
+     - importlib.resources.files(...) instead returns a Traversable. When the package lives inside a zip,
+       that's effectively a zipfile.Path — it does not correspond to a real file on disk. Calling str()
+       on it just concatenates path components, producing a string that looks like a normal filesystem
+       path (.../AutoRemovePlus-0.6.9.egg/autoremoveplus/data/config.ui) but isn't one — the .egg segment
+       is a zip file, not a directory, so nothing was ever extracted.
+       GTK then tries to open that string with a plain filesystem call, hits the .egg component expecting
+       a directory, finds a zip file instead, and libc returns ENOTDIR.
+   - fix is to use importlib.resources.as_file(). however, something as
+     simple as following doesn't work either:
+       def get_resource(filename):
+           ref = files("autoremoveplus").joinpath("data", filename)
+           with as_file(ref) as path:
+               return str(path)
+       - this would cause client to err out w/ following, because as_file() only guarantees the extracted
+         file exists while its with block is open:
+         > failed to add UI: Failed to open file “/tmp/tmp91i1h82nconfig.ui”: No such file or directory
+       - fix is to keep the extracted file alive using ExitStack
+       - functools.lru_cache gives us the "extract once, reuse forever"
 
-
-0.3.2.6 (2026-09-01)
+## 0.3.2.6 (2026-09-01)
 - add mise.toml
 - fix the pkg_resources deprecation (thanks @wendellavila !) -- #6
 - migrate from drone to GH actions
 
-0.3.2.5 (2022-10-30)
+## 0.3.2.5 (2022-10-30)
 - Correct segmentation fault in Wayland
 
-0.3.2.4 (2022-10-07)
+## 0.3.2.4 (2022-10-07)
 - add zest.releaser
 - add drone-ci integration
 
