@@ -1,3 +1,9 @@
+0.3.2.8 (unreleased)
+--------------------
+
+- Nothing changed yet.
+
+
 0.3.2.7 (2026-09-02)
 
 - fix common/get_resource()
