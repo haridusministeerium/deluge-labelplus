@@ -1,4 +1,4 @@
-## 0.3.2.7 (unreleased)
+0.3.2.7 (2026-09-02)
 
 - fix common/get_resource()
    - the initial fix introduced by #6 was insufficient. with that fix the
